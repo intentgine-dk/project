@@ -2,7 +2,7 @@ import psycopg2
 
 try:
     connection = psycopg2.connect(
-        database="postgres",
+        database="intentgine",
         user="donnv",
         password="v1ctory#01",
         host="intentgine-masterdb1.clyakjebfxtl.us-west-1.rds.amazonaws.com",
@@ -17,8 +17,7 @@ try:
 except (Exception, psycopg2.Error) as error :
     print ("Error while connecting to PostgreSQL", error)
 finally:
-    #closing database connection.
-        if(connection):
-            cursor.close()
-            connection.close()
-            print("PostgreSQL connection is closed")
+    if(connection):
+        cursor.close()
+        connection.close()
+        print("PostgreSQL connection is closed")

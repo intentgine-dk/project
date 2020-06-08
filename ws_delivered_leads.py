@@ -47,8 +47,8 @@ def run_delivered_leads(client_name, process_date):
                     new_v = v.replace("\'", "\\\'")
                     data[k] = new_v
             
-            if data['email'] == '':
-                notif.ingestion_mail("No email on {}".format(file_name))
+            #if data['email'] == '':
+            #    notif.ingestion_mail("No email on {}".format(file_name))
 
             try:
                 query = file.file_to_str(conf_dir, 'delivered_leads//insert.sql')
@@ -64,7 +64,7 @@ def daterange(start_date, end_date):
         yield start_date + timedelta(n)
 
 start_date = date(2020, 4, 1)
-end_date = date(2020, 4, 30)
+end_date = date(2020, 4, 3)
 for process_date in daterange(start_date, end_date):
     print(process_date)
 

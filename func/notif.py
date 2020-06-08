@@ -1,7 +1,6 @@
 import smtplib, ssl
 from datetime import date
 from email.mime.text import MIMEText
-from func.ingestion import audit
 
 def ingestion_mail(campaign):
     current_date = date.today()
@@ -28,3 +27,5 @@ def ingestion_mail(campaign):
         server.sendmail("ingestion.notifier@gmail.com", 
                         recipient.split(','), 
                         msg.as_string().format(campaign))
+
+ingestion_mail("Test")
