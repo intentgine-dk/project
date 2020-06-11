@@ -27,5 +27,3 @@ def ingestion_mail(campaign):
         server.sendmail("ingestion.notifier@gmail.com", 
                         recipient.split(','), 
                         msg.as_string().format(campaign))
-
-ingestion_mail("Test")

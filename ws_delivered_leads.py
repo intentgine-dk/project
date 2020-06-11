@@ -6,8 +6,7 @@ import os
 from datetime import timedelta, date
 
 # Initialize
-#process_date = '2020-05-12'
-#process_date = date.today() - timedelta(days=1)
+process_date = date.today() - timedelta(days=1)
 g_auth = gdrive.google_auth()
 cxn = db.db_connect("local_mysql")
 conf_dir = os.getcwd() + "//files//"
@@ -47,8 +46,11 @@ def run_delivered_leads(client_name, process_date):
                     new_v = v.replace("\'", "\\\'")
                     data[k] = new_v
             
-            #if data['email'] == '':
-            #    notif.ingestion_mail("No email on {}".format(file_name))
+            if data['email'] == '':
+                try:
+                    notif.ingestion_mail("No email on {}".format(file_name))
+                except:
+                    print("Error on {}".format(file_name))
 
             try:
                 query = file.file_to_str(conf_dir, 'delivered_leads//insert.sql')
@@ -59,19 +61,16 @@ def run_delivered_leads(client_name, process_date):
 
         os.remove(raw_file)
 
-def daterange(start_date, end_date):
-    for n in range(int ((end_date - start_date).days)):
-        yield start_date + timedelta(n)
+#start_date = date(2020, 3, 1)
+#end_date = date(2020, 3, 31)
+#for process_date in daterange(start_date, end_date):
+#    print(process_date)
 
-start_date = date(2020, 4, 1)
-end_date = date(2020, 4, 3)
-for process_date in daterange(start_date, end_date):
-    print(process_date)
+run_delivered_leads('BWR', process_date)
+run_delivered_leads('IMR', process_date)
+run_delivered_leads('NSF', process_date)
+run_delivered_leads('MAD', process_date)
+run_delivered_leads('NTL', process_date)
+run_delivered_leads('P2B', process_date)
+run_delivered_leads('TCI', process_date)
 
-    run_delivered_leads('BWR', process_date)
-    run_delivered_leads('IMR', process_date)
-    run_delivered_leads('NSF', process_date)
-    run_delivered_leads('MAD', process_date)
-    run_delivered_leads('NTL', process_date)
-    run_delivered_leads('P2B', process_date)
-    run_delivered_leads('TCI', process_date)
