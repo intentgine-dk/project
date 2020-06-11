@@ -16,7 +16,6 @@ def run_hub(gdrive_dir, process_date):
     raw_files = gdrive.list_files(g_auth, directory_id, process_date)
     for raw_file in raw_files:
         gdrive.dl_file_name(g_auth, directory_id, raw_file)
-        file_name = raw_file.replace("\'", "\\\'")
         df = pd.DataFrame()
         data = dict()
         dl = dict()
