@@ -12,8 +12,8 @@ cxn = db.db_connect("local_mysql")
 conf_dir = os.getcwd() + "//files//"
 dir_id = db.load_directory("directory_id")
 
-def run_delivered_leads(client_name, process_date):
-    directory_id = dir_id[client_name.lower()]
+def run_delivered_leads(gdrive_dir, process_date):
+    directory_id = dir_id[gdrive_dir.lower()]
     raw_files = gdrive.list_files(g_auth, directory_id, process_date)
     for raw_file in raw_files:
         gdrive.dl_file_name(g_auth, directory_id, raw_file)
