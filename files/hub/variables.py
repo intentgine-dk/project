@@ -1,4 +1,4 @@
-reject_types = ['ocx_status', 'Status', 'status', 'Stat']
+reject_types = ['type', 'ocx_status', 'Status', 'status', 'Stat']
 emails = ['Company Email', 'email', 'company_email', 'Email', 'Work Email', 'Email1', 'Email Address']
 email_statuses = ['email_status']
 campaign_names = ['Campaign Name']

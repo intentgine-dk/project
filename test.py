@@ -1,5 +1,5 @@
 import psycopg2
-
+'''
 try:
     connection = psycopg2.connect(
         database="intentgine",
@@ -21,3 +21,6 @@ finally:
         cursor.close()
         connection.close()
         print("PostgreSQL connection is closed")
+'''
+def s():
+    print("Hello")

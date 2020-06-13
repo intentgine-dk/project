@@ -12,6 +12,6 @@ def file_to_df(raw_file):
     if ".csv" in raw_file:
         df = pd.read_csv(raw_file, encoding="ISO-8859-1", engine="python")
     else:
-        df = pd.read_excel(raw_file)
+        df = pd.read_excel(raw_file, sheet_name=0)
 
     return df

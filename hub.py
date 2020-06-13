@@ -2,20 +2,21 @@ from func import db, gdrive, tools, notif
 from func.date_func import daterange
 from func.t_analysis import file
 from files.hub.variables import *
+from datetime import date, timedelta
 import pandas as pd
 import os
 
 # Initialize
-g_auth = gdrive.google_auth()
 cxn = db.db_connect("local_mysql")
 conf_dir = os.getcwd() + "//files//"
 dir_id = db.load_directory("directory_id")
 
-def run_hub(gdrive_dir, process_date):
+def run_hub(g_auth, gdrive_dir, process_date):
     directory_id = dir_id[gdrive_dir.lower()]
     raw_files = gdrive.list_files(g_auth, directory_id, process_date)
     for raw_file in raw_files:
         gdrive.dl_file_name(g_auth, directory_id, raw_file)
+        file_name = raw_file.replace("\'", "\\\'")
         df = pd.DataFrame()
         data = dict()
         dl = dict()
@@ -42,19 +43,15 @@ def run_hub(gdrive_dir, process_date):
                 if "\'" in str(v):
                     new_v = v.replace("\'", "\\\'")
                     data[k] = new_v
-
-            try:
-                query = file.file_to_str(conf_dir, 'hub//insert.sql')
-                cxn.execute(query.format(data['reject_type'], data['email'], data['delivery_date'], data['email_status'], data['campaign_name'], data['brand_domain'], data['ip_address']))
-            except Exception as e:
-                #notif.ingestion_mail(file_name)
-                print(e)
-                pass
+            
+            if str(data['reject_type']).lower() != 'active' or str(data['reject_type']).lower() != 'sent':
+                try:
+                    query = file.file_to_str(conf_dir, 'hub//insert.sql')
+                    cxn.execute(query.format(file_name, data['reject_type'], data['email'], data['delivery_date'], data['email_status'], data['campaign_name'], data['brand_domain'], data['ip_address']))
+                except Exception as e:
+                    #notif.ingestion_mail(file_name)
+                    print(e)
+                    pass
 
         os.remove(raw_file)
-
-start_date = '2019-09-12'
-end_date = '2020-06-04'
-for process_date in daterange(start_date, end_date):
-    run_hub('HUBS', process_date)
     

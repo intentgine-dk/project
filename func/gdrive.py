@@ -3,7 +3,6 @@ from pydrive.drive import GoogleDrive
 from pydrive.auth import GoogleAuth
 from datetime import datetime, timedelta
 from func import db, notif
-from func.ingestion import audit
 import pandas as pd
 import gspread
 import os
@@ -15,7 +14,6 @@ def google_auth():
     g_drive = GoogleDrive(g_auth)
 
     return g_drive
-
 
 def spreadsheet(file):
     scope = ['https://www.googleapis.com/auth/spreadsheets',
@@ -49,37 +47,6 @@ def list_to_db(data_list, schema, target_table, method, mode='append'):
     df.to_sql(con=cxn, name=target_table, schema=schema, if_exists=mode, index=False)
 
     return df
-
-
-def process_ingestion(directory_id, process_date, schema, target_name, target_type, class_name, method, sheet):
-    g_drive = google_auth()
-
-    file_list = g_drive.ListFile({'q': "'{}' in parents and trashed=false".format(directory_id)}).GetList()
-    for file in sorted(file_list, key=lambda x: x['title']):
-
-        key = str(file['id'])
-        title = str(file['title'])
-        campaign = title.split('}')[0].replace('{', '')
-        modified_date_ts = datetime.strptime(file['modifiedDate'], '%Y-%m-%dT%H:%M:%S.%fZ') + timedelta(hours=8)
-        modified_datetime = modified_date_ts.strftime('%Y-%m-%d %H:%M:%S.%f')
-        modified_date = modified_date_ts.strftime('%Y-%m-%d')
-
-        if str(modified_date) == str(process_date):
-
-            print('Downloading {} from GDrive.'.format(title))
-            file.GetContentFile(title)
-            try:
-                data_list = excel_to_list(title, sheet, class_name)
-                dataframe = list_to_db(data_list, schema, target_name, method)
-                count = len(dataframe) or 0
-
-                tmp = {key: {'file_name': title, 'campaign': campaign, 'type': file['fileExtension'],
-                            'date': str(modified_datetime), 'count': count, 'source_id': key}}
-                audit.audit(tmp, target_name, target_type)
-            except Exception as e:
-                print(e)
-                notif.ingestion_mail(title)
-                pass
 
 def dl_file_name(g_auth, directory_id, file_name):
     file_list = g_auth.ListFile({'q': "'{}' in parents and trashed=false".format(directory_id)}).GetList()

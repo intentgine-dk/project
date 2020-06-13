@@ -6,13 +6,11 @@ import os
 from datetime import timedelta, date
 
 # Initialize
-process_date = date.today() - timedelta(days=1)
-g_auth = gdrive.google_auth()
 cxn = db.db_connect("local_mysql")
 conf_dir = os.getcwd() + "//files//"
 dir_id = db.load_directory("directory_id")
 
-def run_delivered_leads(gdrive_dir, process_date):
+def run_delivered_leads(g_auth, gdrive_dir, process_date):
     directory_id = dir_id[gdrive_dir.lower()]
     raw_files = gdrive.list_files(g_auth, directory_id, process_date)
     for raw_file in raw_files:
@@ -37,7 +35,7 @@ def run_delivered_leads(gdrive_dir, process_date):
                     data[k] = ''
                 else:
                     data[k] = row[v]
-                data['client'] = client_name
+                data['client'] = gdrive_dir
                 data['delivery_date'] = process_date
 
             # Data Cleansing
@@ -60,17 +58,3 @@ def run_delivered_leads(gdrive_dir, process_date):
                 pass
 
         os.remove(raw_file)
-
-#start_date = date(2020, 3, 1)
-#end_date = date(2020, 3, 31)
-#for process_date in daterange(start_date, end_date):
-#    print(process_date)
-
-run_delivered_leads('BWR', process_date)
-run_delivered_leads('IMR', process_date)
-run_delivered_leads('NSF', process_date)
-run_delivered_leads('MAD', process_date)
-run_delivered_leads('NTL', process_date)
-run_delivered_leads('P2B', process_date)
-run_delivered_leads('TCI', process_date)
-
