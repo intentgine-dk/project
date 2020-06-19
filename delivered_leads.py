@@ -14,7 +14,12 @@ def run_delivered_leads(g_auth, gdrive_dir, process_date):
     directory_id = dir_id[gdrive_dir.lower()]
     raw_files = gdrive.list_files(g_auth, directory_id, process_date)
     for raw_file in raw_files:
-        gdrive.dl_file_name(g_auth, directory_id, raw_file)
+        try:
+            gdrive.dl_file_name(g_auth, directory_id, raw_file)
+        except Exception as e:
+            print(e)
+            pass
+        
         file_name = raw_file.replace("\'", "\\\'")
         df = pd.DataFrame()
         data = dict()
