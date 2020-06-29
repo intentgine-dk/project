@@ -1,26 +1,6 @@
-import psycopg2
-'''
-try:
-    connection = psycopg2.connect(
-        database="intentgine",
-        user="donnv",
-        password="v1ctory#01",
-        host="intentgine-masterdb1.clyakjebfxtl.us-west-1.rds.amazonaws.com",
-        port='5432'
-    )
+import re
 
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema';")
-    record = cursor.fetchall()
-    print(record)
+str = "{19-990-7 MWP CA EN M365 SMB 250-499 Q1FY20 Content Syndication P1287TD}-17092019.xls"
 
-except (Exception, psycopg2.Error) as error :
-    print ("Error while connecting to PostgreSQL", error)
-finally:
-    if(connection):
-        cursor.close()
-        connection.close()
-        print("PostgreSQL connection is closed")
-'''
-def s():
-    print("Hello")
+g = str.split(".")[0]
+print(g)

@@ -1,4 +1,4 @@
-create table public.delivered_leads(
+create table delivered_leads(
 	id SERIAL,
     campaign varchar(250),
 	email varchar(250),

@@ -1,5 +1,6 @@
 from configparser import ConfigParser
 from sqlalchemy import create_engine
+import psycopg2
 import os
 
 
@@ -27,6 +28,22 @@ def db_connect(section):
     cxn = engine.connect()
 
     return cxn
+
+def rds_connect(section):
+    db_conf = os.getcwd() + "\\files\\conf\\" + "db_config.ini"
+    db_param = config_parser(db_conf, section)
+
+    connection = psycopg2.connect(
+        database="%s" % db_param['database'],
+        user="%s" % db_param['user'],
+        password="%s" % db_param['password'],
+        host="%s" % db_param['host'],
+        port="%s" % db_param['port']
+    )
+
+    cursor = connection.cursor()
+
+    return cursor, connection
 
 def load_directory(section):
     conf = os.getcwd() + "\\files\\conf\\" + "conf.ini"

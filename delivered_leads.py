@@ -3,10 +3,11 @@ from func.t_analysis import file
 from files.delivered_leads.variables import *
 import pandas as pd
 import os
+import re
 from datetime import timedelta, date
 
 # Initialize
-cxn = db.db_connect("local_mysql")
+cursor, connection = db.rds_connect("aurora")
 conf_dir = os.getcwd() + "//files//"
 dir_id = db.load_directory("directory_id")
 
@@ -20,7 +21,11 @@ def run_delivered_leads(g_auth, gdrive_dir, process_date):
             print(e)
             pass
         
-        file_name = raw_file.replace("\'", "\\\'")
+        file_name = raw_file.replace("\'", "\'\'")
+        if "{" in file_name:
+            campaign = re.findall("\{(.*?)\}", file_name)[0]
+        else:
+            campaign = file_name.split(".")[0]
         df = pd.DataFrame()
         data = dict()
         dl = dict()
@@ -46,20 +51,26 @@ def run_delivered_leads(g_auth, gdrive_dir, process_date):
             # Data Cleansing
             for k, v in data.items():
                 if "\'" in str(v):
-                    new_v = v.replace("\'", "\\\'")
+                    new_v = v.replace("\'", "\'\'")
                     data[k] = new_v
             
             if data['email'] == '':
                 try:
-                    notif.ingestion_mail("No email on {}".format(file_name))
+                    #notif.ingestion_mail("No email on {}".format(file_name))
+                    pass
                 except:
                     print("Error on {}".format(file_name))
 
+            if data['campaign'] == '':
+                data['campaign'] = campaign
+
             try:
                 query = file.file_to_str(conf_dir, 'delivered_leads//insert.sql')
-                cxn.execute(query.format(file_name, data['email'], data['first_name'], data['last_name'], data['phone'], data['country'], data['title'], data['company'], data['industry'], data['job_function'], data['client'], data['delivery_date']))
-            except:
-                notif.ingestion_mail(file_name)
+                cursor.execute(query.format(data['campaign'], data['email'], data['first_name'], data['last_name'], data['phone'], data['country'], data['title'], data['company'], data['industry'], data['job_function'], data['client'], data['delivery_date']))
+                connection.commit()
+            except Exception as e:
+                #notif.ingestion_mail(file_name)
+                print(e)
                 pass
 
         os.remove(raw_file)
