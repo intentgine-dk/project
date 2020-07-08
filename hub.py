@@ -54,4 +54,3 @@ def run_hub(g_auth, gdrive_dir, process_date):
                     pass
 
         os.remove(raw_file)
-    
