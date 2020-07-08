@@ -7,7 +7,7 @@ import pandas as pd
 import os
 
 # Initialize
-cxn = db.db_connect("local_mysql")
+cursor, connection = db.db_connect("local_mysql")
 conf_dir = os.getcwd() + "//files//"
 dir_id = db.load_directory("directory_id")
 
@@ -47,7 +47,7 @@ def run_hub(g_auth, gdrive_dir, process_date):
             if str(data['reject_type']).lower() != 'active' or str(data['reject_type']).lower() != 'sent':
                 try:
                     query = file.file_to_str(conf_dir, 'hub//insert.sql')
-                    cxn.execute(query.format(file_name, data['reject_type'], data['email'], data['delivery_date'], data['email_status'], data['campaign_name'], data['brand_domain'], data['ip_address']))
+                    cursor.execute(query.format(file_name, data['reject_type'], data['email'], data['delivery_date'], data['email_status'], data['campaign_name'], data['brand_domain'], data['ip_address']))
                 except Exception as e:
                     #notif.ingestion_mail(file_name)
                     print(e)

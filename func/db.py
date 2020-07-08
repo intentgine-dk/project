@@ -27,7 +27,7 @@ def db_connect(section):
     engine = create_engine(connection_str)
     cxn = engine.connect()
 
-    return cxn
+    return cxn, engine
 
 def rds_connect(section):
     db_conf = os.getcwd() + "\\files\\conf\\" + "db_config.ini"

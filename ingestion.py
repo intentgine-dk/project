@@ -8,14 +8,14 @@ import pandas as pd
 import os
 
 # Initialize
-#start_date = date.today() - timedelta(days=1)
+start_date = date.today() - timedelta(days=1)
 current_date = date.today()
-start_date = date(2019, 9, 16)
+#start_date = date(2020, 1, 31)
 g_auth = gdrive.google_auth()
 
 for process_date in daterange(start_date, current_date):
     print("Running {}.".format(process_date))
-    #run_hub(g_auth, 'HUBS', process_date)
+    run_hub(g_auth, 'HUBS', process_date)
     run_delivered_leads(g_auth, 'BWR', process_date)
     run_delivered_leads(g_auth, 'IMR', process_date)
     run_delivered_leads(g_auth, 'NSF', process_date)

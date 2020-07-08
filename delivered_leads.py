@@ -7,7 +7,8 @@ import re
 from datetime import timedelta, date
 
 # Initialize
-cursor, connection = db.rds_connect("aurora")
+#cursor, connection = db.rds_connect("aurora")
+cursor, connection = db.db_connect("local_mysql")
 conf_dir = os.getcwd() + "//files//"
 dir_id = db.load_directory("directory_id")
 
@@ -22,7 +23,7 @@ def run_delivered_leads(g_auth, gdrive_dir, process_date):
             pass
         
         file_name = raw_file.replace("\'", "\'\'")
-        if "{" in file_name:
+        if ("{" in file_name) and ("}") in file_name:
             campaign = re.findall("\{(.*?)\}", file_name)[0]
         else:
             campaign = file_name.split(".")[0]
@@ -56,7 +57,7 @@ def run_delivered_leads(g_auth, gdrive_dir, process_date):
             
             if data['email'] == '':
                 try:
-                    #notif.ingestion_mail("No email on {}".format(file_name))
+                    #notif.ingestion_mail("No email on {}".format(data['campaign']))
                     pass
                 except:
                     print("Error on {}".format(file_name))
@@ -67,9 +68,9 @@ def run_delivered_leads(g_auth, gdrive_dir, process_date):
             try:
                 query = file.file_to_str(conf_dir, 'delivered_leads//insert.sql')
                 cursor.execute(query.format(data['campaign'], data['email'], data['first_name'], data['last_name'], data['phone'], data['country'], data['title'], data['company'], data['industry'], data['job_function'], data['client'], data['delivery_date']))
-                connection.commit()
+                #connection.commit()
             except Exception as e:
-                #notif.ingestion_mail(file_name)
+                notif.ingestion_mail(data['campaign'])
                 print(e)
                 pass
 
