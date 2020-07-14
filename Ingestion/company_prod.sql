@@ -4,7 +4,7 @@
 INSERT INTO ig_staging.company (
 	SELECT
 		uuid_generate_v4() as company_id
-		,REGEX_REPLACE(UPPER(TRIM(prd.company_name)),  as company_name
+		,UPPER(TRIM(prd.company_name)) as company_name
 		,TRIM(prd.company_linkedin_url) as company_linkedin_url
 		,TRIM(prd.website) as email_domain
 		,TRIM(prd.billing_address_street) as street_address
