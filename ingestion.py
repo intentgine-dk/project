@@ -10,7 +10,7 @@ import os
 # Initialize
 start_date = date.today() - timedelta(days=1)
 current_date = date.today()
-#start_date = date(2020, 1, 31)
+#start_date = date(2020, 7, 10)
 g_auth = gdrive.google_auth()
 
 for process_date in daterange(start_date, current_date):
@@ -23,3 +23,4 @@ for process_date in daterange(start_date, current_date):
     run_delivered_leads(g_auth, 'NTL', process_date)
     run_delivered_leads(g_auth, 'P2B', process_date)
     run_delivered_leads(g_auth, 'TCI', process_date)
+ 
