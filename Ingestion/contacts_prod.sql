@@ -3,31 +3,31 @@
 INSERT INTO ig_staging.contact (
 SELECT
 	uuid_generate_v4() as stg_contact_id
-	,prd.contact_link as contact_linkedin_url
-	,prd.email_address as email_address
-	,MD5(prd.email_address) as email_hash_md5
-	,prd.first_name as first_name
-	,prd.last_name as last_name
+	,TRIM(prd.contact_link) as contact_linkedin_url
+	,TRIM(prd.email_address) as email_address
+	,MD5(TRIM(prd.email_address)) as email_hash_md5
+	,TRIM(prd.first_name) as first_name
+	,TRIM(prd.last_name) as last_name
 	,CASE
 		WHEN prd.title IS NULL
 		THEN 'Unclassified'
 		WHEN prd.title = ''
 		THEN 'Unclassified'
-		ELSE prd.title
+		ELSE UPPER(TRIM(prd.title)) 
 	END as title
 	,dpt.department_id as department_id
-	,(select get_job_function(dpt.department_id, replace(prd.job_function2, '^', ''))) as job_function_id
-	,(select get_job_role(dpt.department_id, (select get_job_function(dpt.department_id, replace(prd.job_function2, '^', ''))), replace(prd.job_function3, '^', ''))) as job_role_id
-	,prd.phone_work as phone_number
-	,prd.primary_address_street as street_address
-	,prd.primary_address_postalcode as postal_code
+	,(SELECT get_job_function(dpt.department_id, replace(prd.job_function2, '^', ''))) as job_function_id
+	,(SELECT get_job_role(dpt.department_id, (SELECT get_job_function(dpt.department_id, replace(prd.job_function2, '^', ''))), replace(prd.job_function3, '^', ''))) as job_role_id
+	,TRIM(prd.phone_work) as phone_number
+	,UPPER(TRIM(prd.primary_address_street)) as street_address
+	,TRIM(prd.primary_address_postalcode) as postal_code
 	,'Production' as contact_data_status
 	,sen.seniority_id
 	,loc.location_id as location_id
 	,'0.0.0.0' as ip_address
 	,'0.0.0.0' as mx_ip_address
-	,now() as last_update_date
-	,cmp.company_id
+	,NOW() as last_update_date
+	,cmp.company_id as company_id
 	,encode(sha256(prd.email_address::bytea), 'hex') as email_hash_sha256
 	,'Alteryx_Production' as datasource
 FROM
