@@ -8,13 +8,7 @@ INSERT INTO ig_staging.contact (
 		,MD5(TRIM(prd.email_address)) as email_hash_md5
 		,TRIM(prd.first_name) as first_name
 		,TRIM(prd.last_name) as last_name
-		,CASE
-			WHEN prd.title IS NULL
-			THEN 'Unclassified'
-			WHEN prd.title = ''
-			THEN 'Unclassified'
-			ELSE UPPER(TRIM(prd.title)) 
-		END as title
+		,UPPER(TRIM(prd.title)) as title
 		,dpt.department_id as department_id
 		,(SELECT get_job_function(dpt.department_id, REPLACE(prd.job_function2, '^', ''))) as job_function_id
 		,(SELECT get_job_role(dpt.department_id, (SELECT get_job_function(dpt.department_id, REPLACE(prd.job_function2, '^', ''))), REPLACE(prd.job_function3, '^', ''))) as job_role_id
