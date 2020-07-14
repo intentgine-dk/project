@@ -24,9 +24,9 @@ INSERT INTO ig_staging.company (
 	FROM
 		ig_ingestion.alteryx_raw_netwise ntw
 	LEFT JOIN ig_master.location loc
-		ON ntw.company_city_local = loc.city_name
-		AND ntw.company_state_local = loc.state_province
-		AND ntw.company_country_local = loc.country
+		ON TRIM(LOWER(ntw.company_city_local)) = TRIM(LOWER(loc.city_name))
+		AND TRIM(LOWER(ntw.company_state_local)) = TRIM(LOWER(loc.state_province))
+		AND TRIM(LOWER(ntw.company_country_local)) = TRIM(LOWER(loc.country))
 	LEFT JOIN ig_master.employee_size emp_size
 		ON 
 		CASE
