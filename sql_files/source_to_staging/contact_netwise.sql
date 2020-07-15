@@ -15,7 +15,7 @@ INSERT INTO ig_staging.contact (
 		,NULL as phone_number
 		,NULL as street_address
 		,NULL as postal_code
-		,'Production' as contact_data_status
+		,'Reverify' as contact_data_status
 		,sen.seniority_id
 		,NULL as location_id
 		,'0.0.0.0' as ip_address

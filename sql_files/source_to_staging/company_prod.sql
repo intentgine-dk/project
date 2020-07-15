@@ -19,7 +19,7 @@ INSERT INTO ig_staging.company (
 		,sic.sic_code
 		,naics.naics_code
 		,rev.revenue_range_id
-		,'Production' as company_data_status
+		,'Reverify' as company_data_status
 		,now() as last_update_date
 		,'Alteryx_Production' as datasource
 	FROM

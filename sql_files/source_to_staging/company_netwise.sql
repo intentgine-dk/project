@@ -2,7 +2,7 @@
 
 INSERT INTO ig_staging.company (
 	SELECT
-		uuid_generate_v4() as stg_contact_id
+		uuid_generate_v4() as company_id
 		,UPPER(TRIM(ntw.company_name)) as company_name
 		,TRIM(ntw.company_linkedin_url) as company_linkedin_url
 		,TRIM(ntw.company_domain) as email_domain
@@ -18,7 +18,7 @@ INSERT INTO ig_staging.company (
 		,sic.sic_code as sic_code
 		,naics.naics_code as naics_code
 		,rev.revenue_range_id as revenue_range_id
-		,'Production' as company_data_status
+		,'Reverify' as company_data_status
 		,now() as last_update_date
 		,'Netwise_YYYYMMDD' as datasource
 	FROM
