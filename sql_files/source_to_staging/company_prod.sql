@@ -7,7 +7,8 @@ INSERT INTO ig_staging.company (
 		,CASE
 			WHEN UPPER(TRIM(prd.company_name)) = ''
 			THEN NULL
-		ELSE as company_name
+			ELSE UPPER(TRIM(prd.company_name))
+		END as company_name
 		,CASE
 			WHEN TRIM(prd.company_linkedin_url) = ''
 			THEN NULL
