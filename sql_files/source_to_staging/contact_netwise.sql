@@ -15,7 +15,7 @@ INSERT INTO ig_staging.contact (
 		,NULL as phone_number
 		,NULL as street_address
 		,NULL as postal_code
-		,'Reverify' as contact_data_status
+		,'Unverified' as contact_data_status
 		,sen.seniority_id
 		,NULL as location_id
 		,'0.0.0.0' as ip_address
@@ -23,7 +23,7 @@ INSERT INTO ig_staging.contact (
 		,NOW() as last_update_date
 		,cmp.company_id as company_id
 		,encode(sha256(ntw.email_address::bytea), 'hex') as email_hash_sha256
-		,'Netwise_201903' as datasource
+		,'Netwise_202003' as datasource
 	FROM
 		ig_ingestion.alteryx_raw_netwise ntw
 	LEFT JOIN ig_master.department dpt
@@ -39,11 +39,11 @@ INSERT INTO ig_staging.contact (
 			THEN 'Manager'
 			WHEN TRIM(LOWER(ntw.b2b_seniority)) = 'director'
 			THEN 'Director'
-			WHEN TRIM(LOWER(ntw.b2b_seniority)) = 'board of directors'
-			THEN 'Executive Vice President / General Manager'
 			WHEN TRIM(LOWER(ntw.b2b_seniority)) = 'vice president'
 			THEN 'Vice President'
 			WHEN TRIM(LOWER(ntw.b2b_seniority)) = 'c level'
+			THEN 'C Level'
+			WHEN TRIM(LOWER(ntw.b2b_seniority)) = 'board of directors'
 			THEN 'C Level'
 			WHEN TRIM(LOWER(ntw.b2b_seniority)) = 'owner or partner'
 			THEN 'Business Owner / Founder'
@@ -51,5 +51,5 @@ INSERT INTO ig_staging.contact (
 			THEN 'Business Owner / Founder'
 		END = sen.seniority_name
 	LEFT JOIN ig_staging.company cmp
-		ON TRIM(LOWER(ntw.company_name)) = TRIM(LOWER(cmp.company_name))
+		ON TRIM(UPPER(ntw.company_name)) = TRIM(UPPER(cmp.company_name))
 )

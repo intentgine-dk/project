@@ -1,4 +1,5 @@
 -- Company: Netwise
+-- 6,032,956 
 
 INSERT INTO ig_staging.company (
 	SELECT
@@ -20,7 +21,7 @@ INSERT INTO ig_staging.company (
 		,rev.revenue_range_id as revenue_range_id
 		,'Reverify' as company_data_status
 		,now() as last_update_date
-		,'Netwise_YYYYMMDD' as datasource
+		,'202003' as datasource
 	FROM
 		ig_ingestion.alteryx_raw_netwise ntw
 	LEFT JOIN ig_master.location loc

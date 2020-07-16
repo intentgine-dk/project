@@ -23,4 +23,3 @@ for process_date in daterange(start_date, current_date):
     run_delivered_leads(g_auth, 'NTL', process_date)
     run_delivered_leads(g_auth, 'P2B', process_date)
     run_delivered_leads(g_auth, 'TCI', process_date)
- 
