@@ -3,12 +3,32 @@
 INSERT INTO ig_staging.contact (
 	SELECT
 		uuid_generate_v4() as stg_contact_id
-		,TRIM(ntw.person_linkedin_url) as contact_linkedin_url
-		,TRIM(ntw.email_address) as email_address
+		,CASE
+			WHEN TRIM(ntw.person_linkedin_url) = ''
+			THEN NULL
+			ELSE TRIM(ntw.person_linkedin_url)
+		END as contact_linkedin_url
+		,CASE
+			WHEN TRIM(ntw.email_address) = ''
+			THEN NULL
+			ELSE TRIM(ntw.email_address)
+		END as email_address
 		,MD5(TRIM(ntw.email_address)) as email_hash_md5
-		,TRIM(ntw.first_name) as first_name
-		,TRIM(ntw.last_name) as last_name
-		,UPPER(TRIM(ntw.title)) as title
+		,CASE
+			WHEN TRIM(ntw.first_name) = ''
+			THEN NULL
+			ELSE TRIM(ntw.first_name)
+		END as first_name
+		,CASE
+			WHEN TRIM(ntw.last_name) = ''
+			THEN NULL
+			ELSE TRIM(ntw.last_name)
+		END as last_name
+		,CASE
+			WHEN UPPER(TRIM(ntw.title)) = ''
+			THEN NULL
+			ELSE UPPER(TRIM(ntw.title))
+		END as title
 		,dpt.department_id as department_id
 		,(SELECT get_job_function(dpt.department_id, REPLACE(ntw.b2b_job_sub_function, '^', ''))) as job_function_id
 		,NULL as job_role_id
@@ -22,7 +42,7 @@ INSERT INTO ig_staging.contact (
 		,'0.0.0.0' as mx_ip_address
 		,NOW() as last_update_date
 		,cmp.company_id as company_id
-		,encode(sha256(ntw.email_address::bytea), 'hex') as email_hash_sha256
+		,encode(sha256(TRIM(ntw.email_address)::bytea), 'hex') as email_hash_sha256
 		,'Netwise_202003' as datasource
 	FROM
 		ig_ingestion.alteryx_raw_netwise ntw

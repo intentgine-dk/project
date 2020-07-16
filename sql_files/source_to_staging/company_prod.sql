@@ -4,12 +4,35 @@
 INSERT INTO ig_staging.company (
 	SELECT
 		uuid_generate_v4() as company_id
-		,UPPER(TRIM(prd.company_name)) as company_name
-		,TRIM(prd.company_linkedin_url) as company_linkedin_url
-		,TRIM(prd.website) as email_domain
-		,TRIM(prd.billing_address_street) as street_address
-		,TRIM(prd.billing_address_postalcode) as postal_code
-		,TRIM(prd.phone_office) as phone_number
+		,CASE
+			WHEN UPPER(TRIM(prd.company_name)) = ''
+			THEN NULL
+		ELSE as company_name
+		,CASE
+			WHEN TRIM(prd.company_linkedin_url) = ''
+			THEN NULL
+			ELSE TRIM(prd.company_linkedin_url)
+		END as company_linkedin_url
+		,CASE
+			WHEN TRIM(prd.website) = ''
+			THEN NULL
+			ELSE TRIM(prd.website)
+		END as email_domain
+		,CASE
+			WHEN TRIM(prd.billing_address_street) = ''
+			THEN NULL
+			ELSE TRIM(prd.billing_address_street)
+		END as street_address
+		,CASE
+			WHEN TRIM(prd.billing_address_postalcode) = ''
+			THEN NULL
+			ELSE TRIM(prd.billing_address_postalcode)
+		END as postal_code
+		,CASE
+			WHEN TRIM(prd.phone_office) = ''
+			THEN NULL
+			ELSE TRIM(prd.phone_office)
+		END as phone_number
 		,'0.0.0.0' as ip_address
 		,'0.0.0.0' as mx_ip_address
 		,loc.location_id as location_id
