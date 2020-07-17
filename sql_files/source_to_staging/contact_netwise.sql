@@ -47,7 +47,40 @@ INSERT INTO ig_staging.contact (
 	FROM
 		ig_ingestion.alteryx_raw_netwise ntw
 	LEFT JOIN ig_master.department dpt
-		ON TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = LOWER(dpt.department_name)
+		ON 
+		CASE
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = 'admin'
+			THEN 'Administration'
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = 'education'
+			THEN 'Education and Library'
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = 'engineering'
+			THEN 'Engineering and R&D'
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = 'finance'
+			THEN 'Finance'
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = 'general management'
+			THEN 'Senior and General Management'
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = 'healthcare'
+			THEN 'Medical and Healthcare'
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = 'human resources'
+			THEN 'Human Resources and Training'
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = 'legal'
+			THEN 'Legal'
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = 'marketing'
+			THEN 'Marketing'
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = 'operations'
+			THEN 'Operations'
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = 'real estate'
+			THEN 'Sales'
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = NULL
+			THEN 'Unclassified'
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = 'research and development'
+			THEN 'Engineering and R&D'
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = 'sales'
+			THEN 'Sales'
+			WHEN TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = 'technology'
+			THEN 'Information Technology'
+			ELSE 'Other'
+		END = dpt.department_name
 	LEFT JOIN ig_master.seniority sen
 		ON
 		CASE
@@ -72,4 +105,6 @@ INSERT INTO ig_staging.contact (
 		END = sen.seniority_name
 	LEFT JOIN ig_staging.company cmp
 		ON TRIM(UPPER(ntw.company_name)) = TRIM(UPPER(cmp.company_name))
+	WHERE
+		TRIM(LOWER(REPLACE(ntw.b2b_job_function, '^', ''))) = {}
 )

@@ -1,5 +1,6 @@
 -- Initial Ingestion for Company
 -- 532319 in 8min 37sec
+-- 530746 in 14min 16sec
 
 INSERT INTO ig_staging.company (
 	SELECT
@@ -45,7 +46,7 @@ INSERT INTO ig_staging.company (
 		,rev.revenue_range_id
 		,'Reverify' as company_data_status
 		,now() as last_update_date
-		,'Alteryx_Production' as datasource
+		,'2019_Data' as datasource
 	FROM
 		ig_ingestion.alteryx_production prd
 	LEFT JOIN ig_master.location loc

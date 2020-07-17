@@ -7,7 +7,7 @@ INSERT INTO ig_production.company (
         cmp.company_id
         ,cmp.company_name
         ,cmp.company_linkedin_url
-        ,cmp.email_domain
+        ,cmp.email_domain as company_website
         ,cmp.street_address
         ,cmp.postal_code
         ,cmp.phone_number

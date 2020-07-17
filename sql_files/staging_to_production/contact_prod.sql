@@ -65,4 +65,47 @@ INSERT INTO ig_production.contact (
         AND cont.mx_ip_address != ''
         AND cont.email_hash_sha256 != ''
         AND cont.datasource != ''
+
+        AND concat(
+                    cont.contact_linkedin_url
+                    ,cont.email_address
+                    ,cont.email_hash_md5
+                    ,cont.first_name
+                    ,cont.last_name
+                    ,cont.title
+                    ,cont.department_id
+                    ,cont.job_function_id
+                    ,cont.job_role_id
+                    ,cont.phone_number
+                    ,cont.street_address
+                    ,cont.postal_code
+                    ,cont.seniority_id
+                    ,cont.location_id
+                    ,cont.ip_address
+                    ,cont.mx_ip_address
+                    ,cont.stg_contact_id
+                    ) NOT IN 
+            (
+            SELECT
+                concat(
+                    cont.contact_linkedin_url
+                    ,cont.email_address
+                    ,cont.email_hash_md5
+                    ,cont.first_name
+                    ,cont.last_name
+                    ,cont.title
+                    ,cont.department_id
+                    ,cont.job_function_id
+                    ,cont.job_role_id
+                    ,cont.phone_number
+                    ,cont.street_address
+                    ,cont.postal_code
+                    ,cont.seniority_id
+                    ,cont.location_id
+                    ,cont.ip_address
+                    ,cont.mx_ip_address
+                    ,cont.stg_contact_id
+                )
+            FROM ig_production.contact
+            )
 )
