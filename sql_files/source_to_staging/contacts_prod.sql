@@ -55,7 +55,7 @@ INSERT INTO ig_staging.contact (
 		,NOW() as last_update_date
 		,cmp.company_id as company_id
 		,ENCODE(sha256(TRIM(prd.email_address)::BYTEA), 'hex') as email_hash_sha256
-		,'Alteryx_Production' as datasource
+		,'2019_Data' as datasource
 	FROM
 		ig_ingestion.alteryx_production prd
 	LEFT JOIN ig_master.department dpt
