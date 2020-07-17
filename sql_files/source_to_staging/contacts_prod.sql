@@ -71,5 +71,5 @@ INSERT INTO ig_staging.contact (
 	LEFT JOIN ig_master.seniority sen
 		ON LOWER(prd.con_job_level) = LOWER(sen.seniority_name)
 	LEFT JOIN ig_staging.company cmp
-		ON TRIM(LOWER(prd.company_name)) = TRIM(LOWER(cmp.company_name))
+		ON TRIM(UPPER(prd.company_name)) = TRIM(UPPER(cmp.company_name))
 )
