@@ -1,5 +1,4 @@
 -- Initial Ingestion for Company
--- 532319 in 8min 37sec
 -- 530746 in 14min 16sec
 
 INSERT INTO ig_staging.company (
