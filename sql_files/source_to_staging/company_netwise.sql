@@ -1,5 +1,5 @@
 -- Company: Netwise
--- 6,032,956 
+-- 6,032,956 in 1hr 28mins
 
 INSERT INTO ig_staging.company (
 	SELECT

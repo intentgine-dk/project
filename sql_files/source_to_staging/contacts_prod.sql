@@ -1,4 +1,5 @@
 -- Initial Ingestion for Contacts
+-- 19,052,355 in 1hr 4min
 
 INSERT INTO ig_staging.contact (
 	SELECT

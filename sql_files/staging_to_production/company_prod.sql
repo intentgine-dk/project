@@ -1,6 +1,6 @@
 -- Company: Staging to Production
--- 88,760 in 9sec 314 msec
--- 1045 rows with NULL subindustry
+-- 2019_Data: 88,760 in 9sec 314 msec
+-- Netwise_202003: 27986 in 6sec
 
 INSERT INTO ig_production.company (
     SELECT
@@ -26,7 +26,7 @@ INSERT INTO ig_production.company (
     FROM
         ig_staging.company cmp
     WHERE
-        cmp.datasource = 'Alteryx_Production'
+        cmp.datasource = '2019_Data'
         AND cmp.company_data_status = 'Reverify'
         
         AND cmp.company_id IS NOT NULL

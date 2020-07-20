@@ -1,5 +1,5 @@
 -- Contact: Staging to Production
--- 4,038,000 in 8min 58sec
+-- 4,038,004 in 7min 12sec
 
 INSERT INTO ig_production.contact (
     SELECT
@@ -31,7 +31,7 @@ INSERT INTO ig_production.contact (
         ON cont.company_id = cmp.company_id
     WHERE
         cont.contact_data_status = 'Reverify'
-        AND cont.datasource = 'Alteryx_Production'
+        AND cont.datasource = '2019_Data'
         
         AND cont.contact_linkedin_url IS NOT NULL
         AND cont.email_address IS NOT NULL
@@ -65,47 +65,4 @@ INSERT INTO ig_production.contact (
         AND cont.mx_ip_address != ''
         AND cont.email_hash_sha256 != ''
         AND cont.datasource != ''
-
-        AND concat(
-                    cont.contact_linkedin_url
-                    ,cont.email_address
-                    ,cont.email_hash_md5
-                    ,cont.first_name
-                    ,cont.last_name
-                    ,cont.title
-                    ,cont.department_id
-                    ,cont.job_function_id
-                    ,cont.job_role_id
-                    ,cont.phone_number
-                    ,cont.street_address
-                    ,cont.postal_code
-                    ,cont.seniority_id
-                    ,cont.location_id
-                    ,cont.ip_address
-                    ,cont.mx_ip_address
-                    ,cont.stg_contact_id
-                    ) NOT IN 
-            (
-            SELECT
-                concat(
-                    cont.contact_linkedin_url
-                    ,cont.email_address
-                    ,cont.email_hash_md5
-                    ,cont.first_name
-                    ,cont.last_name
-                    ,cont.title
-                    ,cont.department_id
-                    ,cont.job_function_id
-                    ,cont.job_role_id
-                    ,cont.phone_number
-                    ,cont.street_address
-                    ,cont.postal_code
-                    ,cont.seniority_id
-                    ,cont.location_id
-                    ,cont.ip_address
-                    ,cont.mx_ip_address
-                    ,cont.stg_contact_id
-                )
-            FROM ig_production.contact
-            )
 )

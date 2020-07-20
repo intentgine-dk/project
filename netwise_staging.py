@@ -12,6 +12,7 @@ for dpt in department:
     try:
         print("Processing {}.".format(dpt))
         cursor.execute(query.format(dpt))
+        connection.commit()
     except Exception as e:
         print(e)
         pass
