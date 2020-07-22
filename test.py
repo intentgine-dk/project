@@ -1,6 +1,8 @@
-import re
+from func.date_func import daterange
+from datetime import date, timedelta
 
-str = "{19-990-7 MWP CA EN M365 SMB 250-499 Q1FY20 Content Syndication P1287TD}-17092019.xls"
+current_date = date.today()
+i = None
 
-g = str.split(".")[0]
-print(g)
+for process_date in daterange(i, current_date):
+    print(process_date)

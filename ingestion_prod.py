@@ -10,16 +10,17 @@ import os
 # Initialize
 current_date = date.today()
 g_auth = gdrive.google_auth()
-cursor, connection = db.db_connect("local_mysql")
-query = "select max(delivery_date) from prod.delivered_leads"
+cursor, connection = db.rds_connect("aurora")
+#query = "select max(delivery_date) from public.delivered_leads"
+#query = "select '2019-11-'::date"
+#cursor.execute(query)
+#row = cursor.fetchone()
+row = date(2019, 11, 1)
 
-row = cursor.execute(query)
-rows = row.fetchone()
-current_date = date.today()
-for start_date in rows:
+for start_date in row:
     for process_date in daterange(start_date, current_date):
         print("Running {}.".format(process_date))
-        run_hub(g_auth, 'HUBS', process_date)
+        #run_hub(g_auth, 'HUBS', process_date)
         run_delivered_leads(g_auth, 'BWR', process_date)
         run_delivered_leads(g_auth, 'IMR', process_date)
         run_delivered_leads(g_auth, 'NSF', process_date)
