@@ -10,14 +10,17 @@ import os
 # Initialize
 current_date = date.today()
 g_auth = gdrive.google_auth()
-cursor, connection = db.rds_connect("aurora")
-#query = "select max(delivery_date) from public.delivered_leads"
-#query = "select '2019-11-'::date"
-#cursor.execute(query)
-#row = cursor.fetchone()
-row = date(2019, 11, 1)
 
-for start_date in row:
+cursor, connection = db.rds_connect("aurora")
+
+query = "select max(delivery_date) from public.delivered_leads"
+row = cursor.execute(query)
+rows = row.fetchone()
+current_date = date.today()
+
+#start_date = date(2020, 2, 12)
+
+for start_date in rows:
     for process_date in daterange(start_date, current_date):
         print("Running {}.".format(process_date))
         #run_hub(g_auth, 'HUBS', process_date)
