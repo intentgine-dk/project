@@ -6,7 +6,7 @@ INSERT INTO ig_staging.contact (
 		,CASE
 			WHEN TRIM(ntw.person_linkedin_url) = ''
 			THEN NULL
-			ELSE TRIM(ntw.person_linkedin_url)
+			ELSE SPLIT_PART(TRIM(ntw.person_linkedin_url), 'www.', 2)
 		END as contact_linkedin_url
 		,CASE
 			WHEN TRIM(ntw.email_address) = ''

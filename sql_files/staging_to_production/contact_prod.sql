@@ -65,4 +65,5 @@ INSERT INTO ig_production.contact (
         AND cont.mx_ip_address != ''
         AND cont.email_hash_sha256 != ''
         AND cont.datasource != ''
+        AND cont.department_id = {}
 )
