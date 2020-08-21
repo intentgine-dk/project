@@ -1,8 +1,2 @@
-from func.date_func import daterange
-from datetime import date, timedelta
-
-current_date = date.today()
-i = None
-
-for process_date in daterange(i, current_date):
-    print(process_date)
+str = "This  {0} is {0} a {1}".format("zxc", 'aaa')
+print(str)

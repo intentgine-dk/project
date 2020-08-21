@@ -1,12 +1,14 @@
 -- Contact: Netwise
-
-INSERT INTO ig_staging.contact (
+drop table if exists ig_dev.contact_netwise_q3_b2;
+create table ig_dev.contact_netwise_q3_b2 as (
 	SELECT
 		uuid_generate_v4() as stg_contact_id
 		,CASE
 			WHEN TRIM(ntw.person_linkedin_url) = ''
 			THEN NULL
-			ELSE SPLIT_PART(TRIM(ntw.person_linkedin_url), 'www.', 2)
+            WHEN ntw.person_linkedin_url like '%http%'
+			THEN SPLIT_PART(TRIM(ntw.person_linkedin_url), 'www.', 2)
+            ELSE ntw.person_linkedin_url
 		END as contact_linkedin_url
 		,CASE
 			WHEN TRIM(ntw.email_address) = ''
@@ -104,9 +106,11 @@ INSERT INTO ig_staging.contact (
 			THEN 'Business Owner / Founder'
 		END = sen.seniority_name
 	LEFT JOIN ig_staging.company cmp
-		ON TRIM(UPPER(ntw.company_name)) = TRIM(UPPER(cmp.company_name))
+		ON TRIM(UPPER(replace(ntw.company_name, '''', ''))) = TRIM(UPPER(replace(cmp.company_name, '''', '')))
 	WHERE
-		ntw.email_address is not NULL
-		and ntw.email_address != ''
-		and TRIM(ntw.email_address) != ''
+		split_part(ntw.person_linkedin_url, '/', 5) !~ '^.*[^A-Za-z0-9,/:()&!@#$%?'' .-].*$'
+		and ntw.first_name !~ '^.*[^A-Za-z0-9,/:()&!@#$%?'' .-].*$'
+		and ntw.last_name !~ '^.*[^A-Za-z0-9,/:()&!@#$%?'' .-].*$'
+		and ntw.title !~ '^.*[^A-Za-z0-9,/:()&!@#$%?'' .-].*$'
 )
+
