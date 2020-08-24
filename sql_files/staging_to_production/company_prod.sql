@@ -22,12 +22,11 @@ INSERT INTO ig_production.company (
         ,cmp.revenue_range_id
         ,'Unverified' as company_data_status
         ,NOW() as last_update_date
-        ,'2019_Data' as datasource
+        ,datasource
     FROM
         ig_staging.company cmp
     WHERE
-        cmp.datasource = '2019_Data'
-        AND cmp.company_data_status = 'Reverify'
+        cmp.company_data_status = 'Reverify'
         
         AND cmp.company_id IS NOT NULL
         AND cmp.company_name IS NOT NULL

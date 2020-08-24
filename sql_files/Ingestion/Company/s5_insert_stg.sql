@@ -1,4 +1,4 @@
-INSERT INTO ig_dev.company (
+INSERT INTO ig_staging.company (
     SELECT
         cmp.company_id
         ,cmp.company_name
@@ -16,7 +16,7 @@ INSERT INTO ig_dev.company (
         ,cmp.sic_code
         ,cmp.naics_code
         ,cmp.revenue_range_id
-        ,'Unverified' as company_data_status
+        ,'Reverify' as company_data_status
         ,NOW() as last_update_date
         ,'Netwise_202007_b2' as datasource
     FROM

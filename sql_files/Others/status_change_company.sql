@@ -5,5 +5,4 @@ where
 	upper(trim(t1.company_name)) = upper(trim(t2.company_name))
 	and t1.company_linkedin_url = t2.company_linkedin_url
 	and t1.email_domain = t2.company_website
-	and t1.datasource = '2019_Data'
 	and t1.company_data_status = 'Reverify'
