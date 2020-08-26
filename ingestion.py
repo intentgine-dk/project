@@ -27,3 +27,4 @@ for start_date in rows:
         run_delivered_leads(g_auth, 'NTL', process_date)
         run_delivered_leads(g_auth, 'P2B', process_date)
         run_delivered_leads(g_auth, 'TCI', process_date)
+        run_delivered_leads(g_auth, 'GRL', process_date)
